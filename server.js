@@ -301,6 +301,11 @@ function findStudent(uid) {
 }
 
 /* ---------------- ROUTES ---------------- */
+// Get all students (list endpoint)
+app.get("/users", (req, res) => {
+  res.json(users);
+});
+
 // Get student by UID
 app.get("/user/:uid", (req, res) => {
   const result = findStudent(req.params.uid);

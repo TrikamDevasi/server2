@@ -315,19 +315,19 @@ app.post("/user", (req, res) => {
   res.json(result.student);
 });
 
-// Update student details
+// Update student details (partial update allowed)
 app.put("/user/:uid", (req, res) => {
   const result = findStudent(req.params.uid);
   if (result.error) return res.status(result.status).json({ error: result.error });
 
   const student = result.student;
-  const { name, university, totalSubjects, bonus, attendance } = req.body;
 
-  if (name) student.name = name;
-  if (university) student.university = university;
-  if (totalSubjects) student.totalSubjects = totalSubjects;
-  if (bonus) student.bonus = bonus;
-  if (attendance) student.attendance = attendance;
+  // Update only provided fields
+  Object.keys(req.body).forEach(key => {
+    if (student.hasOwnProperty(key) && req.body[key] !== undefined) {
+      student[key] = req.body[key];
+    }
+  });
 
   res.json(student);
 });
